@@ -1,4 +1,3 @@
-from scipy.optimize import leastsq
 import numpy as np
 import math
 
@@ -22,7 +21,4 @@ step = 0.0001
 while (dBeta0(beta)** 2 + dBeta1(beta)** 2 ) > epsilon:
     beta = betaNew(beta, step)
 
-#a = leastsq(errorFunc, np.array([1,1]))
 print(beta)
-#print("")
-#print(a)
