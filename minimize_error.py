@@ -1,5 +1,9 @@
 #!/Users/edelsonc/anaconda/bin/python
 """
+This script contains a form of an error minimizer and a test error function.
+The error minimizer works by making guesses of the points around the given
+parameters (beta) and trying them. If any are smaller then ther current error,
+the new error is kept and the process is repeated.
 
 author: edelsonc
 created: 10/04/2016
@@ -34,9 +38,8 @@ def minimum_error(func, beta, df = 0.01, tol = 0.00001):
     tol -- tolerance, default of 0.00001 ( not necessary currently )
     """
     error = func(beta)
-    counter = 1
-    while error > tol and counter < 10**5:
-        counter += 1
+    for _ in range(10**5):
+
         beta_x = [beta[0] - df, beta[0] + df]
         beta_y = [beta[1] + df, beta[1] - df]
         beta_list = list(product(beta_x, beta_y))
@@ -45,13 +48,24 @@ def minimum_error(func, beta, df = 0.01, tol = 0.00001):
             error_new = func(tuple)
             if error_new < error:
                 error = error_new
+                derr = abs(error - error_new)
                 beta = tuple
 
     return beta
 
 if __name__ == "__main__":
-    hours = np.array([0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 1.75, 2.00, 2.25, 2.50, 2.75, 3.00, 3.25, 3.50, 4.00, 4.25, 4.50, 4.75, 5.00, 5.50])
-    passed = np.array([0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1])
+
+    hours = np.array([0.50, 0.75, 1.00, 1.25,
+                        1.50, 1.75, 1.75, 2.00,
+                        2.25, 2.50, 2.75, 3.00, 
+                        3.25, 3.50, 4.00, 4.25,
+                        4.50, 4.75, 5.00, 5.50])
+                            
+    passed = np.array([0, 0, 0, 0,
+                        0, 0, 1, 0,
+                        1, 0, 1, 0,
+                        1, 0, 1, 1,
+                        1, 1, 1, 1])
 
     min_b = minimum_error(errorFunc, [1,1], 0.001,)
 
